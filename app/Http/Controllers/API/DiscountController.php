@@ -45,7 +45,7 @@ class DiscountController extends Controller
             return response()->json([
                 'code' => 400,
                 'success' => false,
-                'error' => 'No Discount Found',
+                'error' => config('constants.status.messages.discount.notFound'),
             ], 400);
         }
 
@@ -138,7 +138,7 @@ class DiscountController extends Controller
         if ($totalDiscountUsed >= $discountInfo->redemptionLimit['max_disAmount']) {
             return [
                 'success' => false,
-                'message' => 'Maximum allowed discount code amount has been reached.',
+                'message' => config('constants.status.messages.discount.maxAmountLimit'),
             ];
         }
 
@@ -151,13 +151,13 @@ class DiscountController extends Controller
             ($maxUsageLimit !== null && $timesDiscountUsedByAll >= $maxUsageLimit)) {
             return [
                 'status' => 'error',
-                'message' => 'Maximum allowed discount Usage has been reached.',
+                'message' => config('constants.status.messages.discount.maxUsageLimit'),
             ];
         }
 
         return [
             'success' => true,
-            'message' => 'Discount rules are valid.',
+            'message' => config('constants.status.messages.discount.valid'),
         ];
     }
     
