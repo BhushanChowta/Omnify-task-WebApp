@@ -23,7 +23,7 @@
     </main>
 
     <footer>
-        <p>&copy; {{ date('Y') }} My Application. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} Omnify Task.</p>
     </footer>
 
     <script src="{{ asset('js/app.js') }}"></script> <!-- Link to your JavaScript file -->
