@@ -82,6 +82,7 @@ class DiscountController extends Controller
         ], 200);
     }
 
+    //1. Family Member Discount Check
     private function isOldCusFamilyMember(Request $request)
     {
         $familyCustomerIDs = Customer::where('family_id', Customer::find($request->customer_id)->family_id)->pluck('id');
@@ -104,6 +105,7 @@ class DiscountController extends Controller
         return $hasSuccessfulTransaction;
     }
 
+    //2. Recurring Discount Check
     private function isRepeatCustomer(Request $request)
     {
         // Decode the services JSON object from the request
@@ -124,29 +126,31 @@ class DiscountController extends Controller
         return $hasSuccessfulTransaction;
     }
 
+    //3. Discount Rules - number of uses and maximum discount amount validation
     private function isOkDiscountRules($discountInfo, $customer_id)
     {
         // Fetch all transactions for the given discount code
         $query = Transaction::where('discount_id', $discountInfo->id)->where('status', 'SUCCESS');
+        $rawTransactions = $query->get();
 
         // Include customer_id filter only if redemptionType is not MAX_USAGE
         if ($discountInfo->redemptionType != 'MAX_USAGE') {
             $query->where('customer_id', $customer_id);
         }
-
         $transactions = $query->get();
 
         // Sum the total discount amount for this customer using this discount code
-        $totalDiscountUsed = $transactions->sum('discount_amount');
+        $totalDiscountUsed = $rawTransactions->sum('discountAmount');
 
         // Count how many times this discount code has been used
-        $timesDiscountUsed = $transactions->count();
+        $timesDiscountUsedByCus = $transactions->count();
+        $timesDiscountUsedByAll = $rawTransactions->count();
 
         // Check if the total discount amount exceeds the maximum allowed amount
         if ($totalDiscountUsed >= $discountInfo->redemptionLimit['max_disAmount']) {
             return [
                 'success' => false,
-                'message' => 'Maximum allowed discount amount has been reached.',
+                'message' => 'Maximum allowed discount code amount has been reached.',
             ];
         }
 
@@ -155,8 +159,8 @@ class DiscountController extends Controller
         $maxUsageLimit = isset($discountInfo->redemptionLimit['MAX_USAGE']) ? $discountInfo->redemptionLimit['MAX_USAGE'] : null;
 
         // Handle the case when both limits are present
-        if (($perUserLimit !== null && $timesDiscountUsed >= $perUserLimit) || 
-            ($maxUsageLimit !== null && $timesDiscountUsed >= $maxUsageLimit)) {
+        if (($perUserLimit !== null && $timesDiscountUsedByCus >= $perUserLimit) || 
+            ($maxUsageLimit !== null && $timesDiscountUsedByAll >= $maxUsageLimit)) {
             return [
                 'status' => 'error',
                 'message' => 'Maximum allowed discount amount has been reached.',

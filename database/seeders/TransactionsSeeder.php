@@ -21,12 +21,12 @@ class TransactionsSeeder extends Seeder
         //     ['id' => 5, 'family_id' => 2, 'email' => 'customer5@example.com', 'name' => 'Charlie'],
         // ]);
 
-        // DB::table('transactions')->insert([
-        //     ['id' => 1, 'customer_id' => 2, 'services' => '{"event":"456"}', 'status' => 'SUCCESS', 'discount_id' => 2],
-        //     ['id' => 2, 'customer_id' => 1, 'services' => '{"class":"789"}', 'status' => 'SUCCESS', 'discount_id' => 1],
-        //     ['id' => 3, 'customer_id' => 5, 'services' => '{"appointments":"101"}', 'status' => 'SUCCESS', 'discount_id' => 3],
-        //     ['id' => 4, 'customer_id' => 4, 'services' => '{"classpack":"202"}', 'status' => 'SUCCESS', 'discount_id' => 3],
-        //     ['id' => 5, 'customer_id' => 3, 'services' => '{"facilities":"303"}', 'status' => 'SUCCESS', 'discount_id' => 3],
-        // ]);
+        DB::table('transactions')->insert([
+            ['id' => 1, 'customer_id' => 2, 'services' => '{"event":"456"}','finalAmount' => 200.00, 'discountAmount' => 10.00, 'status' => 'SUCCESS', 'discount_id' => 2],
+            ['id' => 2, 'customer_id' => 1, 'services' => '{"class":"789"}','finalAmount' => 200.00, 'discountAmount' => 10.00,  'status' => 'SUCCESS', 'discount_id' => 1],
+            ['id' => 3, 'customer_id' => 5, 'services' => '{"appointments":"101"}','finalAmount' => 200.00, 'discountAmount' => 10.00,  'status' => 'SUCCESS', 'discount_id' => 3],
+            ['id' => 4, 'customer_id' => 4, 'services' => '{"classpack":"202"}','finalAmount' => 200.00, 'discountAmount' => 10.00,  'status' => 'SUCCESS', 'discount_id' => 3],
+            ['id' => 5, 'customer_id' => 3, 'services' => '{"facilities":"303"}','finalAmount' => 200.00, 'discountAmount' => 10.00,  'status' => 'SUCCESS', 'discount_id' => 3],
+        ]);
     }
 }
