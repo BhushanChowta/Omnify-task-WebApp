@@ -22,14 +22,14 @@ The development process started with an analysis of the Omnify website to unders
 
 ### Discount CRUD Module
 
-A basic CRUD (Create, Read, Update, Delete) interface for managing discounts was implemented. The JSON DBstructure for Discount Model is defined in `./database/structure/discount.json`.
+A basic CRUD (Create, Read, Update, Delete) interface for managing discounts was implemented. This implementation is in `app\Http\Controllers\DiscountController.php` [View](./app/Http/Controllers/DiscountController.php). The JSON DB structure for Discount Model is defined in `.\database\structure\discount.json` [View](./database/structure/discount.json).
 
 #### Discount CRUD Pages
 ![Discount CRUD Pages](./public/assets/readme/crud.jpg)
 
 ### Apply Discount API
 
-The API for applying discounts is implemented in `app\Http\Controllers\API\DiscountController.php`. The endpoint is set up as follows:
+The API for applying discounts is implemented in `app\Http\Controllers\API\DiscountController.php` [View](./app/Http/Controllers/API/DiscountController.php). The endpoint is set up as follows:
 
 - **Base URL:** `APP_URL/api/applyDiscount`
 - **Method:** POST
