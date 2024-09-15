@@ -30,7 +30,7 @@ class DiscountController extends Controller
 
             // Applies a discount When an attendee books the same schedule or subscription again.
             $isRepeatCustomer = self::isRepeatCustomer($request);
-            if($isRepeatCustomer && !isset($discount_code)){
+            if($isRepeatCustomer){
                 $discount = Discount::where('availableTo','REPEAT')->first();
                 $discount_code = $discount ? $discount->discountCode : null;
             }
@@ -165,7 +165,7 @@ class DiscountController extends Controller
             ($maxUsageLimit !== null && $timesDiscountUsedByAll >= $maxUsageLimit)) {
             return [
                 'status' => 'error',
-                'message' => 'Maximum allowed discount amount has been reached.',
+                'message' => 'Maximum allowed discount Usage has been reached.',
             ];
         }
 

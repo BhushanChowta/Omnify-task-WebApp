@@ -12,7 +12,6 @@ class DiscountController extends Controller
     public function index()
     {
         $discounts = Discount::all();
-        return $discounts;
         return view('discounts.index', compact('discounts'));
     }
 
@@ -23,7 +22,7 @@ class DiscountController extends Controller
 
     public function store(DiscountRequest $request)
     {
-        Discount::create($request->validated());
+        Discount::create($request->validated()); //Server Side Validation
 
         return redirect()->route('discounts.index')
                          ->with('success', 'Discount created successfully.');
@@ -43,11 +42,9 @@ class DiscountController extends Controller
 
     public function update(DiscountRequest $request, $id)
     {
-        // return $request->validated();
-
         $discount = Discount::findOrFail($id);
 
-        $discount->update($request->validated());
+        $discount->update($request->validated()); //Server Side Validation
 
         return redirect()->route('discounts.index')
                          ->with('success', 'Discount updated successfully.');
