@@ -7,6 +7,7 @@ This repository contains the implementation of a Discount Module for the Omnify 
 
 Develop a discount module to apply discounts based on different rules and integrate it with the existing booking system. The module includes CRUD operations for managing discounts and an API for applying them. [Doc Link](https://docs.google.com/document/d/1CuZxolA5w_7mFxrUweT542I3FGnjE8Yj7Q8--HQ5ZHE/)
 
+Here, I chose the Omnify as the booking system to do this assignment.
 
 ## Initial Research
 

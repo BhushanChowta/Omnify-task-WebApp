@@ -7,21 +7,22 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Discount;
 use App\Models\Transaction;
+use App\Http\Requests\API\DiscountRequest;
 use config;
 
 class DiscountController extends Controller
 {
 
-    public function applyDiscount(Request $request)
+    public function applyDiscount(DiscountRequest $request)
     {
         $discount_code = $request->discount_code ?? null;
-        $price = $request->price ?? 0;
+        $price = $request->price;
         $customer_id = $request->customer_id; //Payer
-        $schedule_ids = $request->services;
+        $services = $request->services;
 
         if(!isset($discount_code)){
             // Applies a discount if any family member has previously purchased the same schedule.
-            $isOldCusFamilyMember = self::isOldCusFamilyMember($request);
+            $isOldCusFamilyMember = self::isOldCusFamilyMember($services, $customer_id);
 
             if($isOldCusFamilyMember){
                 $discount = Discount::where('availableTo',config('constants.available_to.FAMILY'))->first();
@@ -29,7 +30,7 @@ class DiscountController extends Controller
             }
 
             // Applies a discount When an attendee books the same schedule or subscription again.
-            $isRepeatCustomer = self::isRepeatCustomer($request);
+            $isRepeatCustomer = self::isRepeatCustomer($services, $customer_id);
             if($isRepeatCustomer){
                 $discount = Discount::where('availableTo',config('constants.available_to.REPEAT'))->first();
                 $discount_code = $discount ? $discount->discountCode : null;
@@ -71,12 +72,12 @@ class DiscountController extends Controller
     }
 
     //1. Family Member Discount Check
-    private function isOldCusFamilyMember(Request $request)
+    private function isOldCusFamilyMember($services, $customer_id)
     {
-        $familyCustomerIDs = Customer::where('family_id', Customer::find($request->customer_id)->family_id)->pluck('id');
+        $familyCustomerIDs = Customer::where('family_id', Customer::find($customer_id)->family_id)->pluck('id');
         
         // Decode the services JSON object from the request
-        $servicesObject = json_decode($request->services, true);
+        $servicesObject = json_decode($services, true);
         $key = key($servicesObject);
         $value = $servicesObject[$key];
 
@@ -94,14 +95,14 @@ class DiscountController extends Controller
     }
 
     //2. Recurring Discount Check
-    private function isRepeatCustomer(Request $request)
+    private function isRepeatCustomer($services, $customer_id)
     {
         // Decode the services JSON object from the request
-        $servicesObject = json_decode($request->services, true);
+        $servicesObject = json_decode($services, true);
         $key = key($servicesObject);
         $value = $servicesObject[$key];
 
-        $hasSuccessfulTransaction = Transaction::where('customer_id', $request->customer_id)
+        $hasSuccessfulTransaction = Transaction::where('customer_id', $customer_id)
                                             ->where(function($query) use ($key, $value) {
                                                 if ($key && $value) {
                                                     // Comparing the services
