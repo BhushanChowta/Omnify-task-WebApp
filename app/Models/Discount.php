@@ -14,7 +14,7 @@ class Discount extends Model
         'discountCode',
         'discountType',
         'value',
-        'applies',
+        'availableTo',
         'eligibility',
         'autoApply',
         'expiryOn',

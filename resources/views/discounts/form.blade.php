@@ -41,13 +41,15 @@
         </div>
 
         <div>
-            <label for="applies">Applies to:</label>
-            <select id="applies" name="applies">
-                @foreach(config('constants.discount_applies_to') as $value => $label)
-                    <option value="{{ $value }}" {{ old('applies', $discount->applies ?? '') == $value ? 'selected' : '' }}>{{ $label }}</option>
+            <label for="availableTo">Available to:</label>
+            <select id="availableTo" name="availableTo" required>
+                @foreach(config('constants.available_to') as $value => $label)
+                    <option value="{{ $value }}" {{ old('availableTo', $discount->availableTo ?? '') == $value ? 'selected' : '' }}>
+                        {{ $label }}
+                    </option>
                 @endforeach
             </select>
-            @error('applies')
+            @error('availableTo')
                 <div class="error">{{ $message }}</div>
             @enderror
         </div>

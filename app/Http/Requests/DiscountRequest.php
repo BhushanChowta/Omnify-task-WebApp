@@ -27,7 +27,7 @@ class DiscountRequest extends FormRequest
             ],
             'discountType' => 'required|in:PERCENTAGE,FIXED',
             'value' => 'required|integer|min:1',
-            'applies' => 'required|in:ALL,FAMILY,REPEAT',
+            'availableTo' => 'required|in:ALL,FAMILY,REPEAT',
             'autoApply' => 'boolean',
             'expiryOn' => 'required|after_or_equal:today',
             'redemptionType' => 'required|in:MAX_USAGE,PER_USER,BOTH',

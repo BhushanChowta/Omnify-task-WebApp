@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'discount_applies_to' => [
+    'available_to' => [
         'NONE' => 'None',
         'ALL' => 'All',
         'FAMILY' => 'Family',

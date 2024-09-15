@@ -24,13 +24,15 @@ class DiscountController extends Controller
             $isOldCusFamilyMember = self::isOldCusFamilyMember($request);
 
             if($isOldCusFamilyMember){
-                $discount_code = "FAMILY5";
+                $discount = Discount::where('availableTo','FAMILY')->first();
+                $discount_code = $discount ? $discount->discountCode : null;
             }
 
             // Applies a discount When an attendee books the same schedule or subscription again.
             $isRepeatCustomer = self::isRepeatCustomer($request);
             if($isRepeatCustomer && !isset($discount_code)){
-                $discount_code = "REPEAT5";
+                $discount = Discount::where('availableTo','REPEAT')->first();
+                $discount_code = $discount ? $discount->discountCode : null;
             }
 
             $discountInfo =  Discount::where('discountCode', $discount_code)->where('autoApply', true)->first();
