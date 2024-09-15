@@ -39,7 +39,15 @@ The API for applying discounts is implemented in `app\Http\Controllers\API\Disco
   - `customer_id` (required)
   - `services` (required)
 
-When no `discount_code` is provided, the API attempts to find eligible discounts for the customer and returns the applicable discounts.
+When no `discount_code` is provided, the API attempts to find eligible discounts for the customer and returns the applicable discount.
+
+### Customer and Transaction Models
+
+To facilitate the discount application process, I created `Customer` and `Transaction` models. For testing and development purposes, I also seeded each of these models with 5 dummy entries to simulate a real-world environment.
+
+- **Customer Dummy Entries:** [View](./public/assets/readme/customers.png)
+- **Transaction Dummy Entries:** [View](./public/assets/readme/transactions.png)
+- **Discount:** [View](./public/assets/readme/discounts.png)
 
 ### Examples
 
