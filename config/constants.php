@@ -2,23 +2,14 @@
 
 return [
     'available_to' => [
-        'NONE' => 'None',
-        'ALL' => 'All',
-        'FAMILY' => 'Family',
-        'REPEAT' => 'Repeaters',
+        'NONE' => 'NONE',
+        'ALL' => 'ALL',
+        'FAMILY' => 'FAMILY',
+        'REPEAT' => 'REPEAT',
     ],
-
-    'discount_eligibility' => [
-        'NONE' => 'None',
-        'ALL' => 'All',
-        // ... other eligibility options
-    ],
-
-    'redemption_types' => [
-        'MAX_USAGE' => 'Max Usage',
-        'PER_USER' => 'Per User Max Usage',
-        'BOTH' => 'Apply Both Conditions',
-    ],
-
-    // ... other constant groups
+    'status' => [
+        'success' => 'SUCCESS',
+        'pending' => 'PENDING',
+        'failed' => 'FAILED',
+    ]
 ];

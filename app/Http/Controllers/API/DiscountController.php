@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Discount;
 use App\Models\Transaction;
+use config;
 
 class DiscountController extends Controller
 {
@@ -23,14 +24,14 @@ class DiscountController extends Controller
             $isOldCusFamilyMember = self::isOldCusFamilyMember($request);
 
             if($isOldCusFamilyMember){
-                $discount = Discount::where('availableTo','FAMILY')->first();
+                $discount = Discount::where('availableTo',config('constants.available_to.FAMILY'))->first();
                 $discount_code = $discount ? $discount->discountCode : null;
             }
 
             // Applies a discount When an attendee books the same schedule or subscription again.
             $isRepeatCustomer = self::isRepeatCustomer($request);
             if($isRepeatCustomer){
-                $discount = Discount::where('availableTo','REPEAT')->first();
+                $discount = Discount::where('availableTo',config('constants.available_to.REPEAT'))->first();
                 $discount_code = $discount ? $discount->discountCode : null;
             }
 
@@ -82,11 +83,11 @@ class DiscountController extends Controller
         $hasSuccessfulTransaction = Transaction::whereIn('customer_id', $familyCustomerIDs)
                                             ->where(function($query) use ($key, $value) {
                                                 if ($key && $value) {
-                                                    // Use string manipulation to account for curly braces and quotes
+                                                    // Comparing the services
                                                     $query->whereRaw('services LIKE ?', ['%{"' . $key . '":"' . $value . '"}%']);
                                                 }
                                             })
-                                            ->where('status', 'SUCCESS')
+                                            ->where('status', config('constants.status.success'))
                                             ->exists();
 
         return $hasSuccessfulTransaction;
@@ -103,11 +104,11 @@ class DiscountController extends Controller
         $hasSuccessfulTransaction = Transaction::where('customer_id', $request->customer_id)
                                             ->where(function($query) use ($key, $value) {
                                                 if ($key && $value) {
-                                                    // Use string manipulation to account for curly braces and quotes
+                                                    // Comparing the services
                                                     $query->whereRaw('services LIKE ?', ['%{"' . $key . '":"' . $value . '"}%']);
                                                 }
                                             })
-                                            ->where('status', 'SUCCESS') // Assuming you have a 'status' field
+                                            ->where('status', config('constants.status.success')) // Assuming you have a 'status' field
                                             ->exists();
 
         return $hasSuccessfulTransaction;
@@ -117,7 +118,7 @@ class DiscountController extends Controller
     private function isOkDiscountRules($discountInfo, $customer_id)
     {
         // Fetch all transactions for the given discount code
-        $query = Transaction::where('discount_id', $discountInfo->id)->where('status', 'SUCCESS');
+        $query = Transaction::where('discount_id', $discountInfo->id)->where('status', config('constants.status.success'));
         $rawTransactions = $query->get();
 
         // Include customer_id filter only if redemptionType is not MAX_USAGE
