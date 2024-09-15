@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the implementation of a Discount Module for the Omnify Booking System using PHP and Laravel. The module is designed to handle various discount rules and integrates with the existing system via APIs.
+This repository contains the implementation of a Discount Module for the Omnify Booking System using PHP and Laravel. The module is designed to handle various discount rules and integrates with the existing system via APIs [Doc Link](https://docs.google.com/document/d/1CuZxolA5w_7mFxrUweT542I3FGnjE8Yj7Q8--HQ5ZHE/).
 
 ## Objective
 
@@ -45,9 +45,9 @@ When no `discount_code` is provided, the API attempts to find eligible discounts
 
 To facilitate the discount application process, I created `Customer` and `Transaction` models. For testing and development purposes, I also seeded each of these models with 5 dummy entries to simulate a real-world environment.
 
-- **Customer Dummy Entries:** [View](./public/assets/readme/customers.png)
-- **Transaction Dummy Entries:** [View](./public/assets/readme/transactions.png)
-- **Discount:** [View](./public/assets/readme/discounts.png)
+- **Customer Dummy Entries:** [View](./public/assets/readme/customers.PNG)
+- **Transaction Dummy Entries:** [View](./public/assets/readme/transactions.PNG)
+- **Discount:** [View](./public/assets/readme/discounts.PNG)
 
 ### Examples
 
