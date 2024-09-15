@@ -14,8 +14,7 @@ class DiscountController extends Controller
     public function applyDiscount(Request $request)
     {
         $discount_code = $request->discount_code ?? null;
-        $amountAfterDiscount = $price = $request->price ?? 0;
-        $discountedAmount = 0;
+        $price = $request->price ?? 0;
         $customer_id = $request->customer_id; //Payer
         $schedule_ids = $request->services;
 
@@ -60,27 +59,13 @@ class DiscountController extends Controller
             ], 400);
         }
 
-        // Apply the discount based on the discount type
-        if ($discountInfo->discountType == 'FIXED') {
-            $discountedAmount = $discountInfo->value;
-            $amountAfterDiscount = $price - $discountedAmount;
-        } else if ($discountInfo->discountType == 'PERCENTAGE') {
-            $discountedAmount = ($price * $discountInfo->value) / 100;
-            $amountAfterDiscount = $price - $discountedAmount;
-        } else {
-            $amountAfterDiscount = $amountAfterDiscount;
-            $discountedAmount = $discountedAmount;
-        }
+        // Apply the discount
+        $discountData = $this->calculateDiscount($discountInfo, $price);
 
         return response()->json([
             'code' => 200,
             'success' => true,
-            'data' => [
-                'amountAfterDiscount' => $amountAfterDiscount,
-                'discountedAmount' => $discountedAmount,
-                'discount_name' => $discountInfo->name ?? null,
-                'discount_code' => $discountInfo->discountCode ?? null,
-            ]
+            'data' => $discountData,
         ], 200);
     }
 
@@ -174,5 +159,26 @@ class DiscountController extends Controller
             'message' => 'Discount rules are valid.',
         ];
     }
+    
+    // Discount Calculation
+    private function calculateDiscount($discountInfo, $price) {
+        $discountedAmount = 0;
+        $amountAfterDiscount = $price;
+
+        if ($discountInfo->discountType === 'FIXED') {
+            $discountedAmount = $discountInfo->value;
+            $amountAfterDiscount = $price - $discountedAmount;
+        } elseif ($discountInfo->discountType === 'PERCENTAGE') {
+            $discountedAmount = ($price * $discountInfo->value) / 100;
+            $amountAfterDiscount = $price - $discountedAmount;
+        }
+
+        return [
+            'amountAfterDiscount' => $amountAfterDiscount,
+            'discountedAmount' => $discountedAmount,
+            'discount_name' => $discountInfo->name ?? null,
+            'discount_code' => $discountInfo->discountCode ?? null,
+        ];
+    } 
 
 }
