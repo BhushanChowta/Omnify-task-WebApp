@@ -1,0 +1,20 @@
+{
+    "id": 3,
+    "name": "GENERAL",
+    "discountCode": "FLAT10",
+    "discountType": "FIXED",
+    "value": 10,
+    "availableTo": "ALL",
+    "eligibility": "",
+    "autoApply": false,
+    "expiryOn": "2024-09-21T00:00:00.000000Z",
+    "redemptionType": "BOTH",
+    "redemptionLimit": 
+    {
+        "PER_USER": "20",
+        "MAX_USAGE": "20",
+        "max_disAmount": "50"
+    },
+    "created_at": "2024-09-15T05:50:59.000000Z",
+    "updated_at": "2024-09-15T05:50:59.000000Z"
+}
