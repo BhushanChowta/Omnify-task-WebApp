@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DiscountController;
 
-Route::get('/applyDiscount', [DiscountController::class, 'applyDiscount']);
+Route::post('/applyDiscount', [DiscountController::class, 'applyDiscount']);
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
