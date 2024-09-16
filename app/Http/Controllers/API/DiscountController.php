@@ -23,7 +23,6 @@ class DiscountController extends Controller
         if(!isset($discount_code)){
             // Applies a discount if any family member has previously purchased the same schedule.
             $isOldCusFamilyMember = self::isOldCusFamilyMember($services, $customer_id);
-
             if($isOldCusFamilyMember){
                 $discount = Discount::where('availableTo',config('constants.available_to.FAMILY'))->first();
                 $discount_code = $discount ? $discount->discountCode : null;
