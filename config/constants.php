@@ -17,6 +17,7 @@ return [
             'valid' => 'Discount rules are valid.',
             'maxUsageLimit' => 'Maximum allowed discount code usage has been reached.',
             'maxAmountLimit' => 'Maximum allowed discount code amount has been reached.',
+            'expired' => 'Discount code has expired.',
             'notFound' => 'Discount not found.',
         ]
     ]

@@ -9,6 +9,7 @@ use App\Models\Discount;
 use App\Models\Transaction;
 use App\Http\Requests\API\DiscountRequest;
 use config;
+use Carbon\Carbon;
 
 class DiscountController extends Controller
 {
@@ -45,7 +46,7 @@ class DiscountController extends Controller
             return response()->json([
                 'code' => 400,
                 'success' => false,
-                'error' => config('constants.status.messages.discount.notFound'),
+                'error' => config('constants.messages.discount.notFound'),
             ], 400);
         }
 
@@ -114,9 +115,18 @@ class DiscountController extends Controller
         return $hasSuccessfulTransaction;
     }
 
-    //3. Discount Rules - number of uses and maximum discount amount validation
+    //3. Discount Rules - date, number of uses and maximum discount amount validation
     private function isOkDiscountRules($discountInfo, $customer_id)
     {
+        // Check if the discount code is expired or not.
+        $expiryDate = Carbon::parse($discountInfo->expiryOn);
+        if (Carbon::now()->greaterThan($expiryDate)) {
+            return [
+                'success' => false,
+                'message' => config('constants.messages.discount.expired'),
+            ];
+        }
+
         // Fetch all transactions for the given discount code
         $query = Transaction::where('discount_id', $discountInfo->id)->where('status', config('constants.status.success'));
         $rawTransactions = $query->get();
@@ -138,7 +148,7 @@ class DiscountController extends Controller
         if ($totalDiscountUsed >= $discountInfo->redemptionLimit['max_disAmount']) {
             return [
                 'success' => false,
-                'message' => config('constants.status.messages.discount.maxAmountLimit'),
+                'message' => config('constants.messages.discount.maxAmountLimit'),
             ];
         }
 
@@ -151,13 +161,13 @@ class DiscountController extends Controller
             ($maxUsageLimit !== null && $timesDiscountUsedByAll >= $maxUsageLimit)) {
             return [
                 'status' => 'error',
-                'message' => config('constants.status.messages.discount.maxUsageLimit'),
+                'message' => config('constants.messages.discount.maxUsageLimit'),
             ];
         }
 
         return [
             'success' => true,
-            'message' => config('constants.status.messages.discount.valid'),
+            'message' => config('constants.messages.discount.valid'),
         ];
     }
     
