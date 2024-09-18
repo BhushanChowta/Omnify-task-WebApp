@@ -12,13 +12,17 @@ return [
         'pending' => 'PENDING',
         'failed' => 'FAILED',
     ],
+    'discount_code' => [
+        'family' => 'FAMILY5',
+        'repeat' => 'REPEAT5',
+    ],
     'messages' => [
         "discount" => [
             'valid' => 'Discount rules are valid.',
             'maxUsageLimit' => 'Maximum allowed discount code usage has been reached.',
             'maxAmountLimit' => 'Maximum allowed discount code amount has been reached.',
             'expired' => 'Discount code has expired.',
-            'notFound' => 'Discount not found.',
+            'notAvailable' => 'Discount not Available.',
         ]
     ]
 ];

@@ -20,6 +20,8 @@ class DiscountController extends Controller
         $price = $request->price;
         $customer_id = $request->customer_id; //Payer
         $services = $request->services;
+        $discountInfo = null;
+        $isEligible = true;
 
         if(!isset($discount_code)){
             // Applies a discount if any family member has previously purchased the same schedule.
@@ -38,15 +40,28 @@ class DiscountController extends Controller
 
             $discountInfo =  Discount::where('discountCode', $discount_code)->where('autoApply', true)->first();
         } else {
-            $discountInfo =  Discount::where('discountCode', $discount_code)->first();
+
+            // Check if the discount code is of family member type and validate family membership
+            if ($discount_code === config('constants.discount_code.family') && !$this->isOldCusFamilyMember($services, $customer_id)) {
+                $isEligible = false;
+            }
+            
+            // Check if the discount code is of repeat customer type and validate repeat customer status
+            if ($discount_code === config('constants.discount_code.repeat') && !$this->isRepeatCustomer($services, $customer_id)) {
+                $isEligible = false;
+            }
+
+            if ($isEligible) {
+                $discountInfo =  Discount::where('discountCode', $discount_code)->first();
+            }
         }
 
         if (!$discountInfo) {
-            // Return 400 error if discount is not found
+            // Return 400 error if discount is not found/eligible
             return response()->json([
                 'code' => 400,
                 'success' => false,
-                'error' => config('constants.messages.discount.notFound'),
+                'error' => config('constants.messages.discount.notAvailable'),
             ], 400);
         }
 
