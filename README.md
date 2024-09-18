@@ -71,4 +71,6 @@ To facilitate the discount application process, I created `Customer` and `Transa
 
 ## Usage
 
+Initally send a POST request with the customer id to `APP_URL/api/getCustomerToken/{id}` to get Auth Token.
+
 To apply a discount, send a POST request to `APP_URL/api/applyDiscount` with the required parameters. The response will include details about the applied discount or information on eligible discounts.
