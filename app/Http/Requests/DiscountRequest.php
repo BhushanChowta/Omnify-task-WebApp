@@ -14,6 +14,8 @@ class DiscountRequest extends FormRequest
 
     public function rules()
     {
+        // Determine if we're updating or creating a discount
+        $discountId = $this->route('id'); // For update requests, 'id' will be available in the route
 
         return [
             'name' => 'required|string|max:255',
@@ -21,7 +23,7 @@ class DiscountRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:discounts,discountCode,' 
+                'unique:discounts,discountCode,' . $discountId
             ],
             'discountType' => 'required|in:PERCENTAGE,FIXED',
             'value' => 'required|integer|min:1',
